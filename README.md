@@ -26,7 +26,7 @@ Für die Datenbanktabellen Ingredients und Rechnung stehen für die Einheiten un
 Integerfeld bereit. Hier ist mal aufgeschlüsselt, wie das aussieht:
 
 Einheiten:
-0 - ml
+0 - ml  
 1 - gramm
 2 - Stück
 3 - 3g (Prise)
