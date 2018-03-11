@@ -1,12 +1,13 @@
 from django.contrib import admin
-from portal.models import Bestellung, BestellPositionen, Rechnung, User, Zutaten, Zutatenliste, Rezept
+
+from portal.models import Order, Customer, Ingredient, \
+    Recipe, RecipeList, OrderPosition, Invoice
+
 # Register your models here.
-
-
-admin.site.register(Bestellung)
-admin.site.register(BestellPositionen)
-admin.site.register(Rechnung)
-admin.site.register(User)
-admin.site.register(Zutaten)
-admin.site.register(Zutatenliste)
-admin.site.register(Rezept)
+admin.site.register(Order)
+admin.site.register(Customer)
+admin.site.register(Ingredient)
+admin.site.register(Recipe)
+admin.site.register(RecipeList)
+admin.site.register(OrderPosition)
+admin.site.register(Invoice)
