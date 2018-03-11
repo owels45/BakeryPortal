@@ -25,7 +25,7 @@ Anmeldedaten die oben genannten verwenden.
 Für die Datenbanktabellen Ingredients und Rechnung stehen für die Einheiten und Bezahlstatus nur ein
 Integerfeld bereit. Hier ist mal aufgeschlüsselt, wie das aussieht:
 
-Einheiten:
+**Einheiten:**
 0 - ml  
 1 - gramm  
 2 - Stück  
@@ -34,7 +34,7 @@ Einheiten:
 5 - liter  
 
 
-Rechnungsstatus:  
+**Rechnungsstatus:**  
 1 - offen  
 2 - aufgeschoben  
 3 - bezahlt  
