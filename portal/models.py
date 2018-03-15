@@ -1,41 +1,52 @@
 from django.db import models
-
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Alle Feldtypen in Django: https://docs.djangoproject.com/en/2.0/ref/models/fields/#model-field-types
 
-class Customer(models.Model):
-    kunden_id = models.AutoField(primary_key=True)
-    prename = models.CharField(max_length=200)
-    name = models.CharField(max_length=200)
+
+class CustomerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     bakeryName = models.CharField(max_length=200)
-    street = models.CharField(max_length=200)
-    plz = models.CharField(max_length=5)
+    adress_street = models.CharField(max_length=200)
+    adress_street_number = models.PositiveIntegerField()
+    adress_street_number_extra = models.CharField(max_length=2, blank=True)
+    adress_plz = models.CharField(max_length=5)
+    adress_city = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.prename + " " + self.name + " - " + self.bakeryName
+        return self.user.first_name + " " + self.user.last_name + " - " + self.bakeryName
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        CustomerProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Ingredient(models.Model):
     ingredientName = models.CharField(max_length=100)
-    einheit = models.PositiveIntegerField()  # Per Vereinbarung händeln wir die Einheiten der Zutaten extra
     pricePerUnit = models.FloatField()
 
+    # Per Vereinbarung händeln wir die Einheiten der Zutaten extra
+    UNIT = (
+        ('ml', 'Milliliter'),
+        ('l', 'Liter'),
+        ('g', 'Gramm'),
+        ('mg', 'Milligramm'),
+        ('Stück', 'Stück'),
+        ('Prise/n', 'Prise/n (3g)'),
+    )
+    unit = models.CharField(max_length=6, choices=UNIT, blank=True, help_text='Einheit')
+
     def __str__(self):
-        if self.einheit == 0:
-            unit = "ml"
-        elif self.einheit == 1:
-            unit = "gramm"
-        elif self.einheit == 2:
-            unit = "stück"
-        elif self.einheit == 3:
-            unit = "Prise (3g)"
-        elif self.einheit == 4:
-            unit = ""
-        elif self.einheit == 5:
-            unit = "liter"
-        else:
-            unit = ""
-        return self.ingredientName + " (in " + unit + ")"
+        return f'{self.ingredientName} {self.unit}'
 
 
 class Recipe(models.Model):
@@ -52,30 +63,16 @@ class RecipeList(models.Model):
     amount = models.FloatField()
 
     def __str__(self):
-        if self.ingredient.einheit == 0:
-            unit = "ml"
-        elif self.ingredient.einheit == 1:
-            unit = "gramm"
-        elif self.ingredient.einheit == 2:
-            unit = "stück"
-        elif self.ingredient.einheit == 3:
-            unit = "Prise (3g)"
-        elif self.ingredient.einheit == 4:
-            unit = ""
-        elif self.ingredient.einheit == 5:
-            unit = "liter"
-        else:
-            unit = ""
-        return self.recipe.rezeptBez + " - " + self.ingredient.ingredientName + " " + str(self.amount) + " " + unit
+        return self.recipe.rezeptBez + " - " + self.ingredient.ingredientName + " " + str(self.amount) + " " + self.ingredient.unit
 
 
 class Order(models.Model):
-    kunde = models.ForeignKey(Customer, on_delete=False)
+    kunde = models.ForeignKey(User, on_delete=False)
     bestellDatum = models.DateTimeField('date published')
     rezepte = models.ManyToManyField(Recipe, through='OrderPosition')
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) + ': ' + str(self.kunde) + ' ' + str(self.bestellDatum)
 
 
 class OrderPosition(models.Model):
@@ -91,15 +88,14 @@ class OrderPosition(models.Model):
 class Invoice(models.Model):
     order = models.OneToOneField(Order, on_delete=False)
     rechnungsDatum = models.DateField()
-    bezahlStatus = models.PositiveIntegerField()
+
+    BEZAHL_STATUS = (
+        ('offen', 'offen'),
+        ('aufgeschoben', 'aufgeschoben'),
+        ('bezahlt', 'bezahlt'),
+        ('unbekannt', 'bitte Rechnung prüfen'),
+    )
+    bezahlStatus = models.CharField(max_length=12, choices=BEZAHL_STATUS, blank=False, default='bitte Rechnung prüfen', help_text='Status des Bezahlvorgangs')
 
     def __str__(self):
-        if self.bezahlStatus == 0:
-            bezahlstatus = "offen"
-        elif self.bezahlStatus == 1:
-            bezahlstatus = "aufgeschoben"
-        elif self.bezahlStatus == 2:
-            bezahlstatus = "bezahlt"
-        else:
-            bezahlstatus = "bitte Rechnung überprüfen"
-        return str(self.order.id) + " " + str(self.rechnungsDatum) + " " + str(bezahlstatus)
+        return str(self.order.id) + ": " + str(self.rechnungsDatum) + " " + self.bezahlStatus

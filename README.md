@@ -1,13 +1,17 @@
-For Admin site: /admin/
+# For Admin site: /admin/
 username: superuser
 password: hallo123
 
+# User ohne Berechtigungen
+username: firstUser
+password: firstpassword
+
+
 # Getting Server Startet:
-1. Innerhalb von PyCharm im Terminal auf das Verzeichnis `.\BakeryPortal\` wechseln. (Das muss das
+Innerhalb von PyCharm im Terminal auf das Verzeichnis `.\BakeryPortal\` wechseln. (Das muss das
 Verzeichnis sein, in der auch die `manage.py` liegt). Dort dann den Befehl `python manage.py runserver` eingeben.
 Der Server sollte jetzt laufen und ist unter `localhost:8000/admin` oder `127.0.0.1:8000/admin` erreichbar. Als
 Anmeldedaten die oben genannten verwenden.
-2. Das Frontend ist noch nicht verknüpft, soll später aber auf `localhost:8000` hören.
 
 
 # Datenbankfeatures ausprobieren:
@@ -27,7 +31,7 @@ Integerfeld bereit. Hier ist mal aufgeschlüsselt, wie das aussieht:
 
 **Einheiten:**
 0 - ml  
-1 - gramm  
+1 - gramm
 2 - Stück  
 3 - 3g (Prise)  
 4 - noch unbelegt  

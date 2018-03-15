@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('bestellDatum', models.DateTimeField(verbose_name='date published')),
-                ('kunde', models.ForeignKey(on_delete=False, to='portal.Customer')),
+                ('kunde', models.ForeignKey(on_delete=False, to='portal.CustomerProfile')),
             ],
         ),
         migrations.CreateModel(
