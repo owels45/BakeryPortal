@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Bakery Portal Registry Page</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ user_form }}
+        {{ user_profile_form }}
+        <input type="submit">
+    </form>
+{% endblock %}

@@ -19,10 +19,12 @@ from django.views.generic import RedirectView
 # Use static() to add url mapping to serve static files during development (only)
 from django.conf import settings
 from django.conf.urls.static import static
+from portal import views
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('portal/', include('portal.urls')),
                   path('', RedirectView.as_view(url='/portal/')),
                   path('accounts/', include('django.contrib.auth.urls')),
+                  path('register/', views.register, name='register')
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
