@@ -2,9 +2,12 @@
 username: superuser
 password: hallo123
 
-# User ohne Berechtigungen
-username: firstUser
-password: firstpassword
+# User (Kunden) ohne Berechtigungen
+username: Frey-Bäckerei
+username: Rennsteigbäcker
+username: superbäcker
+für alle gilt:
+password: hallo123
 
 
 # Getting Server Startet:

@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Bakery Portal Registry Page</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ user_form }}
+        <label for="id_user_info-first_name">Vorname:</label>
+        <input type="text" name="user_info-first_name" maxlength="30" id="id_user_info-first_name" required>
+        <label for="id_user_info-last_name">Nachname:</label>
+        <input type="text" name="user_info-last_name" maxlength="150" id="id_user_info-last_name" required>
+        <label for="id_user_info-email">E-Mail:</label>
+        <input type="email" name="user_info-email" maxlength="254" id="id_user_info-email">
+        {{ user_profile_form }}
+        <input type="submit">
+    </form>
+{% endblock %}

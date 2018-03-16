@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .models import UserProfile
-from .forms import UserForm, UserProfileForm
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from .forms import *
+from django.urls import reverse
 
 
 # Create your views here.
@@ -32,15 +33,37 @@ def index(request):
 
 def register(request):
     if request.method == 'POST':
-        uf = UserForm(request.POST, prefix='user')
-        upf = UserProfileForm(request.POST, prefix='user_profile')
-        if uf.is_valid() * upf.is_valid():
-            user = uf.save()
-            user_profile = upf.save(commit=False)
-            user_profile.user = user
+        user_creation_form = UserCreationForm(request.POST)
+        user_info_form = UserInformationForm(request.POST, prefix='user_info')
+        user_profile_form = UserProfileForm(request.POST, prefix='user_profile')
+        if user_creation_form.is_valid() * user_info_form.is_valid() * user_profile_form.is_valid():
+            # user = user_creation_form.save()
+            new_user = User(
+                username=user_creation_form.cleaned_data['username'],
+                first_name=user_info_form.cleaned_data['first_name'],
+                last_name=user_info_form.cleaned_data['last_name'],
+                email=user_info_form.cleaned_data['email']
+            )
+            new_user.set_password(raw_password=user_creation_form.cleaned_data['password2'])
+            new_user.save()
+            user_profile = user_profile_form.save(commit=False)
+            user_profile.user = new_user
             user_profile.save()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('registration_complete'))
     else:
-        uf = UserForm(prefix='user')
-        upf = UserProfileForm(prefix='user_profile')
-    return render(request, 'registration/register.html',context={'user_form': uf, 'user_profile_form': upf})
+        user_creation_form = UserCreationForm()
+        user_info_form = UserInformationForm(prefix='user_info')
+        user_profile_form = UserProfileForm(prefix='user_profile')
+    return render(request, 'registration/registration_form.html',
+                  context={
+                      'user_form': user_creation_form,
+                      'user_info_form': user_info_form,
+                      'user_profile_form': user_profile_form,
+                  })
+
+
+def registration_complete(request):
+    return render(
+        request,
+        'registration/registration_complete.html'
+    )
