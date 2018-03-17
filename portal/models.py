@@ -28,13 +28,12 @@ class Ingredient(models.Model):
         ('ml', 'Milliliter'),
         ('l', 'Liter'),
         ('g', 'Gramm'),
-        ('mg', 'Milligramm'),
         ('kg', 'Kilogramm'),
         ('Stück', 'Stück'),
         ('Tropfen', 'Tropfen'),
         ('Prise/n', 'Prise/n (3g)'),
     )
-    unit = models.CharField(max_length=6, choices=UNIT, blank=True, help_text='Einheit')
+    unit = models.CharField(max_length=12, choices=UNIT, blank=True, help_text='Einheit')
 
     def __str__(self):
         return f'{self.ingredient_name} in {self.unit}'
