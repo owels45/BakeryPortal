@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from portal.models import Ingredient, Recipe, RecipeList
+from portal.models import Ingredient, Recipe, RecipeList, UserProfile
 
 # execute with:
 # python manage.py shell < databasesetup.py
@@ -19,11 +19,13 @@ mehl.save()
 # create Recipes
 kuchen = Recipe(rezept_bezeichnung="Testrezept")
 kuchen.save()
-Recipe(rezept_bezeichnung="Sackvoll").save()
+mehlsack = Recipe(rezept_bezeichnung="Sackvoll Mehl")
+mehlsack.save()
 
 # create RecipeIngredients
 RecipeList(recipe=kuchen, ingredient=butter, amount=300).save()
 RecipeList(recipe=kuchen, ingredient=mehl, amount=300).save()
+RecipeList(recipe=mehlsack, ingredient=mehl, amount=1000).save()
 
 # create SuperUser
 User.objects.create_superuser('admin', 'admin@example.com', 'hallo123')
@@ -33,3 +35,6 @@ user_georg = User.objects.create_user('Bäckerei ungebunden', password='hallo123
 user_georg.first_name = "Georg"
 user_georg.last_name = "Ungebunden"
 user_georg.save()
+
+# create Bakery-Profile
+UserProfile(user=user_georg, bakery_name="Bäckerei ungebunden", adress_street="Musterstraße", adress_street_number=10, adress_plz="0815", adress_city="Mosbach").save()
