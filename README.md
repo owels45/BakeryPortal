@@ -1,3 +1,6 @@
+# Setup-Script
+python manage.py shell < databasesetup.py
+
 # For Admin site: /admin/
 username: superuser
 password: hallo123
