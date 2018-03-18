@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Please name the new recipe</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ recipe_list_form }}
+        <input type="submit">
+    </form>
+{% endblock %}

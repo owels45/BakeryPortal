@@ -27,6 +27,10 @@ urlpatterns = [
                   path('', RedirectView.as_view(url='/portal/')),
                   path('accounts/', include('django.contrib.auth.urls')),
                   path('register/', views.register, name='registration'),
-                  path('register/complete/', views.registration_complete, name='registration_complete')
+                  path('register/complete/', views.registration_complete, name='registration_complete'),
+                  path('recipes/add_recipe', views.add_recipe, name='add_recipe'),
+                  path('recipes/recipe_ingredients', views.add_ingredient, name='recipe_ingredients'),
+                  #path('recipes/add_recipe_complete', views.add_recipe_complete, name='add_recipe_complete'),
+                  path('recipes/recipe_list', views.RecipesView.as_view(), name='recipe_list')
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

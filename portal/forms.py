@@ -1,6 +1,7 @@
 from django import forms
+from django.forms import formset_factory
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Recipe, RecipeList
 
 
 class UserInformationForm(forms.ModelForm):
@@ -13,6 +14,18 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['user']
+
+
+class RecipeForm(forms.ModelForm):
+    class Meta:
+        model = Recipe
+        fields = ['rezept_bezeichnung']
+
+
+class RecipeListForm(forms.ModelForm):
+    class Meta:
+        model = RecipeList
+        exclude = ['recipe']
 
 
 # class RenewBookForm(forms.Form):

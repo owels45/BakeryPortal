@@ -41,7 +41,6 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     rezept_bezeichnung = models.CharField(max_length=200)
-    zutat = models.ManyToManyField(Ingredient, through='RecipeList')
 
     def __str__(self):
         return self.rezept_bezeichnung

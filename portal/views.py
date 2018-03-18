@@ -6,6 +6,7 @@ from django.shortcuts import render
 from .models import UserProfile
 from .forms import *
 from django.urls import reverse
+from django.views import generic
 
 
 # Create your views here.
@@ -66,4 +67,59 @@ def registration_complete(request):
     return render(
         request,
         'registration/registration_complete.html'
+    )
+
+
+def add_recipe(request):
+    if request.method == 'POST':
+        recipe_form = RecipeForm(request.POST)
+
+        if recipe_form.is_valid():
+            new_recipe = Recipe(
+                rezept_bezeichnung=recipe_form.cleaned_data['rezept_bezeichnung']
+            )
+            new_recipe.save()
+
+            return HttpResponseRedirect(reverse('recipe_ingredients'))
+    else:
+        recipe_form = RecipeForm()
+        recipe_list_form = RecipeListForm()
+    return render(request, 'add_recipe_form.html',
+                  context={
+                      'recipe_form': recipe_form
+                  })
+
+
+def add_ingredient(request):
+    if request.method == 'POST':
+
+        recipe_list_form = RecipeListForm(request.POST)
+
+        if recipe_list_form.is_valid():
+            new_recipe_list = RecipeList(
+                # recipe=new_recipe,
+                ingredient=recipe_list_form.cleaned_data['ingredient'],
+                amount=recipe_list_form.cleaned_data['amount']
+            )
+            new_recipe_list.save()
+
+            return HttpResponseRedirect(reverse('recipe_ingredients'))
+    else:
+        recipe_list_form = RecipeListForm()
+    return render(request, 'recipe_ingredients.html',
+                  context={
+                      'recipe_list_form': recipe_list_form
+                  })
+
+
+class RecipesView(generic.ListView):
+    model = Recipe
+    template_name = '../../portal/templates/recipe_list.html'
+    # alternativ in einem eigenen Ordner (recipes) in templates: template_name = 'recipes/recipe_list.html'
+
+
+def add_recipe_complete(request):
+    return render(
+        request,
+        'add_recipe_complete.html'
     )
