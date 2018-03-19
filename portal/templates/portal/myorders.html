@@ -5,7 +5,7 @@
     {% if user.is_authenticated %}
         <table>
             <tr>
-                <td><strong>Rechungsnummer&nbsp;&nbsp;&nbsp;</strong></td>
+                <td><strong>Bestellungsnummer&nbsp;&nbsp;&nbsp;</strong></td>
                 <td><strong>Bestelldatum</strong></td>
             </tr>
         {%  for order in myorders %}
@@ -15,5 +15,7 @@
             </tr>
         {% endfor %}
         </table>
+    {% else%}
+        <p>Bitte loggen Sie sich ein um Ihre Bestellungen zu einzusehen.</p>
     {% endif %}
 {% endblock %}

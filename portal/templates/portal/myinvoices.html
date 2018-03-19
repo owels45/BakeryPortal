@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Ihre Bestellungen:</h1>
+    <h1>Ihre Rechnungen:</h1>
     {% if user.is_authenticated %}
         <table>
             <tr>
@@ -19,5 +19,7 @@
             </tr>
         {% endfor %}
         </table>
+    {% else%}
+    <p>Bitte loggen Sie sich ein um Ihre Rechnungen zu einzusehen.</p>
     {% endif %}
 {% endblock %}

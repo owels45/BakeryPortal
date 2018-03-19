@@ -119,17 +119,29 @@ def order(request):
 
 
 def myorders(request):
-    orders = Order.objects.filter(kunde=request.user)
-    return render(
-        request,
-        'portal/myorders.html',
-        context={'myorders': orders}
-    )
+    if request.user.is_authenticated:
+        orders = Order.objects.filter(kunde=request.user)
+        return render(
+            request,
+            'portal/myorders.html',
+            context={'myorders': orders}
+        )
+    else:
+        return render(
+            request,
+            'portal/myorders.html'
+        )
 
 def myinvoices(request):
-    invocies = Invoice.objects.filter(order__kunde=request.user)
-    return render(
-        request,
-        'portal/myinvoices.html',
-        context={'myinvoices': invocies}
-    )
+    if request.user.is_authenticated:
+        invocies = Invoice.objects.filter(order__kunde=request.user)
+        return render(
+            request,
+            'portal/myinvoices.html',
+            context={'myinvoices': invocies}
+        )
+    else:
+        return render(
+            request,
+            'portal/myinvoices.html'
+        )
