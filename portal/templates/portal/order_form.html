@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Neue Bestellung aufnehmen:</h1>
+
+    {% if user.is_authenticated %}
+    <form action="/portal/order/" method="post">
+        {% csrf_token %}
+        {{ order_form.management_form }}
+        {% for form in order_form %}
+            {{ form }}<br />
+        {% endfor %}
+        <br /><input type="submit" value="Bestellung aufnehmen">
+    </form>
+    {% else %}
+    <p>Bitte loggen Sie sich ein um eine Bestellung aufzunehmen!</p>
+    {% endif %}
+
+{% endblock %}

@@ -6,11 +6,11 @@
         {% csrf_token %}
         {{ user_form }}
         <label for="id_user_info-first_name">Vorname:</label>
-        <input type="text" name="user_info-first_name" maxlength="30" id="id_user_info-first_name" required>
+        <input type="text" name="user_info-first_name" maxlength="30" id="id_user_info-first_name" required><br />
         <label for="id_user_info-last_name">Nachname:</label>
-        <input type="text" name="user_info-last_name" maxlength="150" id="id_user_info-last_name" required>
+        <input type="text" name="user_info-last_name" maxlength="150" id="id_user_info-last_name" required><br />
         <label for="id_user_info-email">E-Mail:</label>
-        <input type="email" name="user_info-email" maxlength="254" id="id_user_info-email">
+        <input type="email" name="user_info-email" maxlength="254" id="id_user_info-email"><br />
         {{ user_profile_form }}
         <input type="submit">
     </form>
