@@ -83,12 +83,9 @@ def add_recipe(request):
             )
             new_recipe.save()
 
-            return HttpResponseRedirect(reverse('recipe_ingredients?', context={'new_recipe_id': new_recipe.id}))
-            #request.get = new_recipe.id
-            #return render(request, 'recipe_ingredients.html', context={'new_recipe_id': new_recipe.id})
+            return HttpResponseRedirect('recipe_ingredients?id=' + str(new_recipe.id))
     else:
         recipe_form = RecipeForm()
-        recipe_list_form = RecipeListForm()
     return render(request, 'portal/add_recipe_form.html',
                   context={
                       'recipe_form': recipe_form
