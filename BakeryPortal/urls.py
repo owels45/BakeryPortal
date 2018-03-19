@@ -27,6 +27,6 @@ urlpatterns = [
                   path('', RedirectView.as_view(url='/portal/')),
                   path('accounts/', include('django.contrib.auth.urls')),
                   path('register/', views.register, name='registration'),
-                  path('register/complete/', views.registration_complete, name='registration_complete')
+
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

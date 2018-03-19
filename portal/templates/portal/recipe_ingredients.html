@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>blahblah</h1>
+    <!--<a href="{%  url 'recipe_ingredients' %}?id={{ new_recipe_id }}">link zur rezeptübersicht</a>-->
+    {% for recipelist in recipe_lists %}
+        {{ recipelist }}<br />
+    {%  endfor %}
+    <form method="POST" action="{{ request.get_full_path }}">
+        {% csrf_token %}
+        {{ recipe_list_form }}
+        <input type="submit">
+    </form>
+{% endblock %}
