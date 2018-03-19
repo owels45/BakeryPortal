@@ -58,7 +58,6 @@ class RecipeList(models.Model):
 class Order(models.Model):
     kunde = models.ForeignKey(User, on_delete=False)
     bestell_datum = models.DateTimeField('date published')
-    rezepte = models.ManyToManyField(Recipe, through='OrderPosition')
 
     def __str__(self):
         return str(self.id) + ': ' + str(self.id) + ' ' + str(self.bestell_datum)
@@ -67,7 +66,7 @@ class Order(models.Model):
 class OrderPosition(models.Model):
     bestellung = models.ForeignKey(Order, on_delete=True)
     rezept = models.ForeignKey(Recipe, on_delete=True)
-    menge = models.IntegerField()
+    menge = models.PositiveIntegerField()
     als_teig = models.BooleanField()
 
     def __str__(self):
@@ -77,6 +76,7 @@ class OrderPosition(models.Model):
 class Invoice(models.Model):
     order = models.OneToOneField(Order, on_delete=False)
     rechnungs_datum = models.DateField()
+    rechnungs_summe = models.FloatField()
 
     BEZAHL_STATUS = (
         ('offen', 'offen'),
