@@ -7,6 +7,7 @@
     {% endif %}
 
     {% if next %}
+        <br>
         {% if user.is_authenticated %}
             <p>Your account doesn't have access to this page. To proceed,
                 please login with an account that has access.</p>
@@ -28,7 +29,7 @@
             </tr>
         </table>
 
-        <input type="submit" value="login"/>
+        <input type="submit" value="login" class="btn-primary btn"/>
         <input type="hidden" name="next" value="{{ next }}"/>
     </form>
     <br>

@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect
@@ -73,6 +74,7 @@ def registration_complete(request):
     )
 
 
+@login_required
 def add_recipe(request):
     if request.method == 'POST':
         recipe_form = RecipeForm(request.POST)
@@ -92,6 +94,7 @@ def add_recipe(request):
                   })
 
 
+@login_required
 def add_ingredient(request):
     if request.GET['id'] and request.GET['id'].isdigit():
         current_recipe = Recipe.objects.get(id=int(request.GET['id']))
@@ -110,7 +113,8 @@ def add_ingredient(request):
     return render(request, 'portal/recipe_ingredients.html',
                   context={
                       'recipe_list_form': RecipeListForm(),
-                      'recipe_lists': recipe_lists
+                      'recipe_lists': recipe_lists,
+                      'receipe': current_recipe,
                   })
 
 
@@ -120,6 +124,7 @@ class RecipesView(generic.ListView):
     # alternativ in einem eigenen Ordner (recipes) in templates: template_name = 'recipes/recipe_list.html'
 
 
+@login_required
 def order(request):
     OrderFormset = formset_factory(OrderForm, extra=10)
     if request.method == 'POST':
@@ -167,6 +172,7 @@ def order(request):
         )
 
 
+@login_required
 def myorders(request):
     if request.user.is_authenticated:
         orders = Order.objects.filter(kunde=request.user)
@@ -182,6 +188,7 @@ def myorders(request):
         )
 
 
+@login_required
 def myinvoices(request):
     if request.user.is_authenticated:
         invocies = Invoice.objects.filter(order__kunde=request.user)
@@ -197,8 +204,9 @@ def myinvoices(request):
         )
 
 
+@login_required
 def invoicedetail(request):
-    if request.GET['id'].isdigit():
+    if request.GET['id'] and request.GET['id'].isdigit():
         invoice = Invoice.objects.get(id=int(request.GET['id']))
         if invoice.order.kunde == request.user:
             order_positions = OrderPosition.objects.filter(bestellung=invoice.order)

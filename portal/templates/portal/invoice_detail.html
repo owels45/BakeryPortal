@@ -29,7 +29,7 @@
     {% if invoice.bezahl_status == 'offen' %}
     <form action="/portal/myinvoice/?id={{ invoice.id }}" method="post">
         {% csrf_token %}
-        <input type="submit" value="Rechnung bezahlen.">
+        <input type="submit" value="Rechnung bezahlen." class="btn-success btn">
     </form>
     {% endif %}
     <br /><br />

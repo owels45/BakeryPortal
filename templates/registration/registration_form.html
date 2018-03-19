@@ -4,7 +4,7 @@
     <h1>Bakery Portal Registry Page</h1>
     <form method="POST" action="">
         {% csrf_token %}
-        {{ user_form }}
+        {{ user_form }} <br>
         <label for="id_user_info-first_name">Vorname:</label>
         <input type="text" name="user_info-first_name" maxlength="30" id="id_user_info-first_name" required><br />
         <label for="id_user_info-last_name">Nachname:</label>
@@ -12,6 +12,6 @@
         <label for="id_user_info-email">E-Mail:</label>
         <input type="email" name="user_info-email" maxlength="254" id="id_user_info-email"><br />
         {{ user_profile_form.as_p }}
-        <input type="submit">
+        <input type="submit" class="btn btn-primary">
     </form>
 {% endblock %}

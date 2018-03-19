@@ -2,14 +2,14 @@
 
 {% block content %}
     <h1>Bakery Portal Home</h1>
-    <p>Welcome to the Bakery Portal{% if user.is_authenticated %}<strong> {{ user.get_full_name }}</strong>{% endif %}!
+    <p>Welcome to the Bakery Portal{% if user.is_authenticated %}<strong> {{ user }}</strong>{% endif %}!
     </p>
 
-    <ul>
-        <li><strong>Number of Customers:</strong> {{ num_customers }}</li>
-        {% if not user.is_authenticated %}
-            <li><a href="{% url 'registration' %}">Register a new User</a></li>
-        {% endif %}
-    </ul>
+
+    {% if not user.is_authenticated %}
+        <label>First time around?</label>
+        <a href="{% url 'registration' %}">- Register here!</a>
+    {% endif %}
+
 
 {% endblock %}
