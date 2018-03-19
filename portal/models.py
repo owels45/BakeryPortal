@@ -76,6 +76,7 @@ class OrderPosition(models.Model):
 class Invoice(models.Model):
     order = models.OneToOneField(Order, on_delete=False)
     rechnungs_datum = models.DateField()
+    rechnungs_summe = models.FloatField()
 
     BEZAHL_STATUS = (
         ('offen', 'offen'),

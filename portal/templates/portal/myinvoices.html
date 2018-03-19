@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Ihre Rechnungen:</h1>
+    {% if user.is_authenticated %}
+        <table>
+            <tr>
+                <td><strong>Rechungsnummer:&nbsp;&nbsp;&nbsp;</strong></td>
+                <td><strong>Bestelldatum:&nbsp;&nbsp;&nbsp;</strong></td>
+                <td><strong>Status:&nbsp;&nbsp;&nbsp;</strong></td>
+                <td><strong>Rechungsbetrag:</strong></td>
+            </tr>
+        {%  for invoice in myinvoices %}
+            <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.rechnungs_datum }}</td>
+                <td>{{ invoice.bezahl_status }}</td>
+                <td>{{ invoice.rechnungs_summe }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else%}
+    <p>Bitte loggen Sie sich ein um Ihre Rechnungen zu einzusehen.</p>
+    {% endif %}
+{% endblock %}

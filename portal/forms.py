@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import UserProfile
+from .models import OrderPosition
 
 
 class UserInformationForm(forms.ModelForm):
@@ -13,6 +14,14 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['user']
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = OrderPosition
+        fields = ['rezept', "menge", "als_teig"]
+
+
 
 
 # class RenewBookForm(forms.Form):

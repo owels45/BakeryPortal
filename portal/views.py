@@ -1,11 +1,14 @@
-from django.contrib.auth.decorators import login_required
+import datetime
+
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.forms import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from .models import UserProfile
+
+from portal.models import Order, Invoice, Recipe, RecipeList
 from .forms import *
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -27,7 +30,7 @@ def index(request):
     return render(
         request,
         'index.html',
-        context={'num_customers': num_customers, },
+        context={'num_customers': num_customers}
     )
 
 
@@ -67,3 +70,78 @@ def registration_complete(request):
         request,
         'registration/registration_complete.html'
     )
+
+
+def order(request):
+    OrderFormset = formset_factory(OrderForm, extra=10)
+    if request.method == 'POST':
+        formset = OrderFormset(request.POST)
+        resultString = 'Bitte loggen Sie sich ein um eine bestellung aufzugeben.'
+        if formset.is_valid() and request.user.is_authenticated:
+            resultString = 'Bitte geben Sie mindestens eine Bestellung in die Bestellzeilen ein.'
+            if formset.has_changed():
+                new_order = Order(kunde=request.user, bestell_datum=datetime.datetime.now())
+                new_order.save()
+                new_invoice = Invoice(
+                    order=new_order,
+                    rechnungs_datum=datetime.datetime.now(),
+                    bezahl_status='offen',
+                    rechnungs_summe=0
+                )
+                resultString = 'Bestellung erfolgreich. Ihre Bestellungsnummer ist: ' + str(new_order.id) + "."
+                for form in formset:
+                    recipe_id = form.cleaned_data.get('rezept')
+                    amount = form.cleaned_data.get('menge')
+                    if recipe_id and amount:
+                        recipe_ingredients = RecipeList.objects.filter(recipe=recipe_id)
+                        for recipe_list in recipe_ingredients:
+                            new_invoice.rechnungs_summe += \
+                                float(amount) * recipe_list.amount * recipe_list.ingredient.price_per_unit
+                        OrderPosition(
+                            bestellung=new_order,
+                            rezept=recipe_id,
+                            menge=amount,
+                            als_teig=form.cleaned_data.get('als_teig')
+                        ).save()
+                new_invoice.save()
+        return render(
+            request,
+            'portal/order_processing.html',
+            context={'order_result': resultString,
+                     }
+        )
+    else:
+        return render(
+            request,
+            'portal/order_form.html',
+            context={'order_form': OrderFormset()}
+        )
+
+
+def myorders(request):
+    if request.user.is_authenticated:
+        orders = Order.objects.filter(kunde=request.user)
+        return render(
+            request,
+            'portal/myorders.html',
+            context={'myorders': orders}
+        )
+    else:
+        return render(
+            request,
+            'portal/myorders.html'
+        )
+
+def myinvoices(request):
+    if request.user.is_authenticated:
+        invocies = Invoice.objects.filter(order__kunde=request.user)
+        return render(
+            request,
+            'portal/myinvoices.html',
+            context={'myinvoices': invocies}
+        )
+    else:
+        return render(
+            request,
+            'portal/myinvoices.html'
+        )
