@@ -17,7 +17,7 @@ mehl = Ingredient(ingredient_name="Mehl", price_per_unit=0.49, unit="kg")
 mehl.save()
 
 # create Recipes
-kuchen = Recipe(rezept_bezeichnung="Testrezept")
+kuchen = Recipe(rezept_bezeichnung="Kuchen")
 kuchen.save()
 mehlsack = Recipe(rezept_bezeichnung="Sackvoll Mehl")
 mehlsack.save()
@@ -28,7 +28,7 @@ RecipeList(recipe=kuchen, ingredient=mehl, amount=300).save()
 RecipeList(recipe=mehlsack, ingredient=mehl, amount=1000).save()
 
 # create SuperUser
-User.objects.create_superuser('admin', 'admin@example.com', 'hallo123')
+User.objects.create_superuser('superuser', 'admin@example.com', 'hallo123')
 
 # create NormalUsers
 user_georg = User.objects.create_user('Bäckerei ungebunden', password='hallo123')
