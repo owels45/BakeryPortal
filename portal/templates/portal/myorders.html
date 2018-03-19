@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Ihre Bestellungen:</h1>
+    {% if user.is_authenticated %}
+        <table>
+            <tr>
+                <td><strong>Rechungsnummer&nbsp;&nbsp;&nbsp;</strong></td>
+                <td><strong>Bestelldatum</strong></td>
+            </tr>
+        {%  for order in myorders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.bestell_datum }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
