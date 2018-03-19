@@ -7,7 +7,8 @@
         {{ recipe_form }}
         <input type="submit">
     </form>
-    <form action="/recipes/recipe_list" method="get">
+    <form action="{% url 'recipe_list' %}" method="POST">
+        {% csrf_token %}
     <input type="submit" value="Back to recipe list"
          name="Submit" id="frm1_submit" />
     </form>

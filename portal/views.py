@@ -83,49 +83,44 @@ def add_recipe(request):
             )
             new_recipe.save()
 
-            return HttpResponseRedirect(reverse('recipe_ingredients'))
+            return HttpResponseRedirect(reverse('recipe_ingredients?', context={'new_recipe_id': new_recipe.id}))
+            #request.get = new_recipe.id
+            #return render(request, 'recipe_ingredients.html', context={'new_recipe_id': new_recipe.id})
     else:
         recipe_form = RecipeForm()
         recipe_list_form = RecipeListForm()
-    return render(request, 'add_recipe_form.html',
+    return render(request, 'portal/add_recipe_form.html',
                   context={
                       'recipe_form': recipe_form
                   })
 
 
 def add_ingredient(request):
-    if request.method == 'POST':
+    if request.GET['id'] and request.GET['id'].isdigit():
+        current_recipe = Recipe.objects.get(id=int(request.GET['id']))
+        recipe_lists = RecipeList.objects.filter(recipe=current_recipe)
+        if request.method == 'POST':
 
-        recipe_list_form = RecipeListForm(request.POST)
+            recipe_list_form = RecipeListForm(request.POST)
 
-        if recipe_list_form.is_valid():
-            new_recipe_list = RecipeList(
-                # recipe=new_recipe,
-                ingredient=recipe_list_form.cleaned_data['ingredient'],
-                amount=recipe_list_form.cleaned_data['amount']
-            )
-            new_recipe_list.save()
-
-            return HttpResponseRedirect(reverse('recipe_ingredients'))
-    else:
-        recipe_list_form = RecipeListForm()
-    return render(request, 'recipe_ingredients.html',
+            if recipe_list_form.is_valid():
+                new_recipe_list = RecipeList(
+                    recipe=current_recipe,
+                    ingredient=recipe_list_form.cleaned_data['ingredient'],
+                    amount=recipe_list_form.cleaned_data['amount']
+                )
+                new_recipe_list.save()
+    return render(request, 'portal/recipe_ingredients.html',
                   context={
-                      'recipe_list_form': recipe_list_form
+                      'recipe_list_form': RecipeListForm(),
+                      'recipe_lists': recipe_lists
                   })
 
 
 class RecipesView(generic.ListView):
     model = Recipe
-    template_name = '../../portal/templates/recipe_list.html'
+    template_name = '../../portal/templates/portal/recipe_list.html'
     # alternativ in einem eigenen Ordner (recipes) in templates: template_name = 'recipes/recipe_list.html'
-
-
-def add_recipe_complete(request):
-    return render(
-        request,
-        'add_recipe_complete.html'
-    )
 
 
 def order(request):

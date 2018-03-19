@@ -8,7 +8,7 @@
 
       {% for recipe in object_list %}
       <li>
-        <a href="{{ recipe.get_absolute_url }}">{{ recipe.rezept_bezeichnung }}</a>
+        <a href="recipe_ingredients?id={{ recipe.id }}">{{ recipe.rezept_bezeichnung }}</a>
       </li>
       {% endfor %}
 
@@ -17,7 +17,8 @@
       <p>There are no recipes.</p>
     {% endif %}
 
-    <form action="/recipes/add_recipe" method="get">
+    <form action="{% url 'add_recipe' %}" method="POST">
+        {% csrf_token %}
     <input type="submit" value="Add new recipe"
          name="Submit" id="frm1_submit" />
     </form>
