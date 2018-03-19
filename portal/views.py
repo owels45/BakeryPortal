@@ -154,13 +154,19 @@ def invoicedetail(request):
         invoice = Invoice.objects.get(id=int(request.GET['id']))
         if invoice.order.kunde == request.user:
             order_positions = OrderPosition.objects.filter(bestellung=invoice.order)
+            thankyoutext = ''
+            if request.method == 'POST':
+                invoice.bezahl_status = 'bezahlt'
+                invoice.save()
+                thankyoutext = 'Vielen Dank, dass Sie BakeryPortal gewählt haben.'
             return render(
                 request,
                 'portal/invoice_detail.html',
                 context={'invoice': invoice,
                          'orderposition': order_positions,
                          'mwst': round(invoice.rechnungs_summe * 0.19, 2),
-                         'total': round(invoice.rechnungs_summe * 1.19, 2)}
+                         'total': round(invoice.rechnungs_summe * 1.19, 2),
+                         'thankyoutext': thankyoutext}
             )
     return render(
         request,

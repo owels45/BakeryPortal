@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Ihre Rechnung mit der Rechnungsnummer: {{ invoice.id }}:</h1>
+    <h1>Ihre Rechnung mit der Rechnungsnummer: {{ invoice.id }}</h1>
 
     {% if invoice.bezahl_status == 'offen' %}<span style="color: red; ">{% else %}<span style="color: green; ">{% endif %}
     <h4>Rechnungsstatus: {{ invoice.bezahl_status }}</h4>
@@ -26,4 +26,12 @@
     <h4><strong>Rechnungssumme: {{ invoice.rechnungs_summe }} EUR</strong></h4>
     <h5>Mehrwertsteuer: {{ mwst}} EUR</h5>
     <h4><strong>Gesamtsumme: {{ total }} EUR</strong></h4>
+    {% if invoice.bezahl_status == 'offen' %}
+    <form action="/portal/myinvoice/?id={{ invoice.id }}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Rechnung bezahlen.">
+    </form>
+    {% endif %}
+    <br /><br />
+    <span style="color: green; ">{{ thankyoutext }}</span>
 {% endblock %}

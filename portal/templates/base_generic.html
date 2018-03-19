@@ -21,10 +21,16 @@
             {% block sidebar %}
                 <ul class="sidebar-nav">
                     <li><a href="{% url 'index' %}">Home</a></li>
+                    <br />
+                    {% if user.is_superuser %}
                     <li><a href="/admin/">Admin Page</a></li>
+                    {%  endif %}
+                    <br />
+                    {% if user.is_authenticated %}
                     <li><a href="/portal/order/">Bestellung aufnehmen</a></li>
                     <li><a href="/portal/myorders/">Meine Bestellungen</a></li>
                     <li><a href="/portal/myinvoices/">Meine Rechnungen</a></li>
+                    {% endif %}
                 </ul>
 
                 <ul class="sidebar-nav">
