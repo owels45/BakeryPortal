@@ -67,3 +67,17 @@ def registration_complete(request):
         request,
         'registration/registration_complete.html'
     )
+
+
+def order(request):
+    if request.method == 'POST':
+        return render(
+            request,
+            'portal/order_processing.html'
+        )
+    else:
+        return render(
+            request,
+            'portal/order_form.html',
+            context={'order_form': OrderForm()}
+        )
