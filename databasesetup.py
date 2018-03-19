@@ -24,7 +24,7 @@ mehlsack.save()
 
 # create RecipeIngredients
 RecipeList(recipe=kuchen, ingredient=butter, amount=300).save()
-RecipeList(recipe=kuchen, ingredient=mehl, amount=300).save()
+RecipeList(recipe=kuchen, ingredient=mehl, amount=0.5).save()
 RecipeList(recipe=mehlsack, ingredient=mehl, amount=1000).save()
 
 # create SuperUser
