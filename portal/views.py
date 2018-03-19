@@ -154,6 +154,7 @@ def order(request):
                             menge=amount,
                             als_teig=form.cleaned_data.get('als_teig')
                         ).save()
+                new_invoice.rechnungs_summe = round(new_invoice.rechnungs_summe, 2)
                 new_invoice.save()
         return render(
             request,
@@ -183,6 +184,7 @@ def myorders(request):
             'portal/myorders.html'
         )
 
+
 def myinvoices(request):
     if request.user.is_authenticated:
         invocies = Invoice.objects.filter(order__kunde=request.user)
@@ -196,3 +198,28 @@ def myinvoices(request):
             request,
             'portal/myinvoices.html'
         )
+
+
+def invoicedetail(request):
+    if request.GET['id'].isdigit():
+        invoice = Invoice.objects.get(id=int(request.GET['id']))
+        if invoice.order.kunde == request.user:
+            order_positions = OrderPosition.objects.filter(bestellung=invoice.order)
+            thankyoutext = ''
+            if request.method == 'POST':
+                invoice.bezahl_status = 'bezahlt'
+                invoice.save()
+                thankyoutext = 'Vielen Dank, dass Sie BakeryPortal gewählt haben.'
+            return render(
+                request,
+                'portal/invoice_detail.html',
+                context={'invoice': invoice,
+                         'orderposition': order_positions,
+                         'mwst': round(invoice.rechnungs_summe * 0.19, 2),
+                         'total': round(invoice.rechnungs_summe * 1.19, 2),
+                         'thankyoutext': thankyoutext}
+            )
+    return render(
+        request,
+        'portal/invoice_detail.html',
+    )

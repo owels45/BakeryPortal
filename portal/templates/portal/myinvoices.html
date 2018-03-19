@@ -8,14 +8,16 @@
                 <td><strong>Rechungsnummer:&nbsp;&nbsp;&nbsp;</strong></td>
                 <td><strong>Bestelldatum:&nbsp;&nbsp;&nbsp;</strong></td>
                 <td><strong>Status:&nbsp;&nbsp;&nbsp;</strong></td>
-                <td><strong>Rechungsbetrag:</strong></td>
+                <td><strong>Rechungsbetrag:&nbsp;&nbsp;&nbsp;</strong></td>
+                <td></td>
             </tr>
         {%  for invoice in myinvoices %}
             <tr>
                 <td>{{ invoice.id }}</td>
                 <td>{{ invoice.rechnungs_datum }}</td>
                 <td>{{ invoice.bezahl_status }}</td>
-                <td>{{ invoice.rechnungs_summe }}</td>
+                <td>{{ invoice.rechnungs_summe }} EUR</td>
+                <td><a href="../myinvoice/?id={{ invoice.id }}">Rechnung einsehen</a></td>
             </tr>
         {% endfor %}
         </table>
