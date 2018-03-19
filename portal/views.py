@@ -1,11 +1,10 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.forms import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from .models import UserProfile
 from .forms import *
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -27,7 +26,7 @@ def index(request):
     return render(
         request,
         'index.html',
-        context={'num_customers': num_customers, },
+        context={'num_customers': num_customers}
     )
 
 
@@ -70,14 +69,22 @@ def registration_complete(request):
 
 
 def order(request):
+    OrderFormset = formset_factory(OrderForm, extra=2)
     if request.method == 'POST':
+        formset = OrderFormset(request.POST)
+        resultString = 'Bitte loggen Sie sich ein um eine bestellung aufzugeben.'
+        if formset.is_valid() and request.user.is_authenticated:
+            resultString = 'Bestellung erfolgreich'
+            #for form in formset:
+            #    bla = form.cleaned_data.get('rezept')
         return render(
             request,
-            'portal/order_processing.html'
+            'portal/order_processing.html',
+            context={'order_result': resultString}
         )
     else:
         return render(
             request,
             'portal/order_form.html',
-            context={'order_form': OrderForm()}
+            context={'order_form': OrderFormset()}
         )
