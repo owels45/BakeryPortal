@@ -11,7 +11,7 @@
         <input type="text" name="user_info-last_name" maxlength="150" id="id_user_info-last_name" required><br />
         <label for="id_user_info-email">E-Mail:</label>
         <input type="email" name="user_info-email" maxlength="254" id="id_user_info-email"><br />
-        {{ user_profile_form }}
+        {{ user_profile_form.as_p }}
         <input type="submit">
     </form>
 {% endblock %}
