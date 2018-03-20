@@ -181,34 +181,22 @@ def order(request):
 
 @login_required
 def myorders(request):
-    if request.user.is_authenticated:
-        orders = Order.objects.filter(kunde=request.user)
-        return render(
-            request,
-            'portal/myorders.html',
-            context={'myorders': orders}
-        )
-    else:
-        return render(
-            request,
-            'portal/myorders.html'
-        )
+    orders = Order.objects.filter(kunde=request.user)
+    return render(
+        request,
+        'portal/myorders.html',
+        context={'myorders': orders}
+    )
 
 
 @login_required
 def myinvoices(request):
-    if request.user.is_authenticated:
-        invocies = Invoice.objects.filter(order__kunde=request.user)
-        return render(
-            request,
-            'portal/myinvoices.html',
-            context={'myinvoices': invocies}
-        )
-    else:
-        return render(
-            request,
-            'portal/myinvoices.html'
-        )
+    invocies = Invoice.objects.filter(order__kunde=request.user)
+    return render(
+        request,
+        'portal/myinvoices.html',
+        context={'myinvoices': invocies}
+    )
 
 
 @login_required
