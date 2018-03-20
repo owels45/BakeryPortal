@@ -1,15 +1,12 @@
 # Setup-Script
-python manage.py shell < databasesetup.py
+python manage.py database_setup
 
 # For Admin site: /admin/
 username: superuser
 password: hallo123
 
 # User (Kunden) ohne Berechtigungen
-username: Frey-Bäckerei
-username: Rennsteigbäcker
-username: superbäcker
-für alle gilt:
+username: Bäckerei ungebunden
 password: hallo123
 
 
