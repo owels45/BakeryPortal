@@ -1,15 +1,15 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Please name the new recipe</h1>
+    <h1>Bitte geben Sie eine Bezeichnung für das neue Rezept an.</h1>
     <form method="POST" action="">
         {% csrf_token %}
         {{ recipe_form }}
-        <input type="submit" class="btn btn-primary">
+        <input type="submit" value="Rezept erstellen" class="btn btn-primary">
     </form>
     <form action="{% url 'recipe_list' %}" method="POST">
         {% csrf_token %}
-    <input type="submit" value="Back to recipe list"
+    <input type="submit" value="Zurück zur Rezeptübersicht"
          name="Submit" id="frm1_submit" class="btn btn-default"/>
     </form>
 {% endblock %}

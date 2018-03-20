@@ -2,13 +2,23 @@
 
 {% block content %}
     <h1>{{ receipe.rezept_bezeichnung }}</h1>
-    <!--<a href="{%  url 'recipe_ingredients' %}?id={{ new_recipe_id }}">link zur rezeptübersicht</a>-->
+    <br />
+    <table>
+        <tr>
+            <td><strong>Zutat:&nbsp;&nbsp;&nbsp;</strong></td>
+            <td><strong>Menge:</strong></td>
+        </tr>
     {% for recipelist in recipe_lists %}
-        {{ recipelist.ingredient }}: {{ recipelist.amount }}<br />
+        <tr>
+            <td>{{ recipelist.ingredient }}&nbsp;&nbsp;&nbsp;</td>
+            <td>{{ recipelist.amount }}</td>
+        </tr>
     {%  endfor %}
+    </table>
+    <br />
     <form method="POST" action="{{ request.get_full_path }}">
         {% csrf_token %}
         {{ recipe_list_form }}
-        <input type="submit" class="btn-primary btn">
+        <input type="submit" value="Weitere Zutat hinzufügen" class="btn-primary btn">
     </form>
 {% endblock %}
