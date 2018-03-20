@@ -41,6 +41,7 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     rezept_bezeichnung = models.CharField(max_length=200)
+    benutzer = models.ForeignKey(User, on_delete=False)
 
     def __str__(self):
         return self.rezept_bezeichnung

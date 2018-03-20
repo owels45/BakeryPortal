@@ -21,19 +21,8 @@ class Command(BaseCommand):
         mehl = Ingredient(ingredient_name="Mehl", price_per_unit=0.49, unit="kg")
         mehl.save()
 
-        # create Recipes
-        kuchen = Recipe(rezept_bezeichnung="Kuchen")
-        kuchen.save()
-        mehlsack = Recipe(rezept_bezeichnung="Sackvoll Mehl")
-        mehlsack.save()
-
-        # create RecipeIngredients
-        RecipeList(recipe=kuchen, ingredient=butter, amount=300).save()
-        RecipeList(recipe=kuchen, ingredient=mehl, amount=0.5).save()
-        RecipeList(recipe=mehlsack, ingredient=mehl, amount=100).save()
-
         # create SuperUser
-        User.objects.create_superuser('superuser', 'admin@example.com', 'hallo123')
+        superuser = User.objects.create_superuser('superuser', 'admin@example.com', 'hallo123')
 
         # create NormalUsers
         user_georg = User.objects.create_user('Bäckerei ungebunden', password='hallo123')
@@ -44,5 +33,16 @@ class Command(BaseCommand):
         # create Bakery-Profile
         UserProfile(user=user_georg, bakery_name="Bäckerei ungebunden", adress_street="Musterstraße",
                     adress_street_number=10, adress_plz="0815", adress_city="Mosbach").save()
+
+        # create Recipes
+        kuchen = Recipe(rezept_bezeichnung="Kuchen", benutzer=user_georg)
+        kuchen.save()
+        mehlsack = Recipe(rezept_bezeichnung="Sackvoll Mehl", benutzer=superuser)
+        mehlsack.save()
+
+        # create RecipeIngredients
+        RecipeList(recipe=kuchen, ingredient=butter, amount=300).save()
+        RecipeList(recipe=kuchen, ingredient=mehl, amount=0.5).save()
+        RecipeList(recipe=mehlsack, ingredient=mehl, amount=100).save()
 
         print("Inserted sample entries into the database.")

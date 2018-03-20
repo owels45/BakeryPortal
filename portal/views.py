@@ -81,7 +81,8 @@ def add_recipe(request):
 
         if recipe_form.is_valid():
             new_recipe = Recipe(
-                rezept_bezeichnung=recipe_form.cleaned_data['rezept_bezeichnung']
+                rezept_bezeichnung=recipe_form.cleaned_data['rezept_bezeichnung'],
+                benutzer=request.user
             )
             new_recipe.save()
 
@@ -124,13 +125,19 @@ class RecipesView(generic.ListView):
     # alternativ in einem eigenen Ordner (recipes) in templates: template_name = 'recipes/recipe_list.html'
 
 
+
+@login_required
+def show_recepies(request):
+    object_list = Recipe.objects.filter(benutzer=request.user)
+    return render(request, 'portal/recipe_list.html', context={'object_list': object_list})
+
+
 @login_required
 def order(request):
     OrderFormset = formset_factory(OrderForm, extra=10)
     if request.method == 'POST':
         formset = OrderFormset(request.POST)
-        resultString = 'Bitte loggen Sie sich ein um eine bestellung aufzugeben.'
-        if formset.is_valid() and request.user.is_authenticated:
+        if formset.is_valid():
             resultString = 'Bitte geben Sie mindestens eine Bestellung in die Bestellzeilen ein.'
             if formset.has_changed():
                 new_order = Order(kunde=request.user, bestell_datum=datetime.datetime.now())
