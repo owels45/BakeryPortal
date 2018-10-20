@@ -1,3 +1,6 @@
+#About 
+This project features an implementation of an internal administration tool for a generic bakery. The project is based on django, but is not yet finished. 
+
 # Setup-Script
 python manage.py database_setup
 
